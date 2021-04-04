@@ -21,6 +21,7 @@ public class Alumno implements Serializable {
 
     private String apellido;
 
+//    No se usa cascada de tipo all porque no elimino objetos, deben de tener algun estado de inactivo
     @OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "id_domicilio", referencedColumnName = "id_domicilio")
     private Domicilio domicilio;
@@ -32,7 +33,7 @@ public class Alumno implements Serializable {
     @OneToMany(mappedBy = "alumno")
     private List<Asignacion> asignacionesAlumno;
 
-//    Usar el toString o lanza error al imprimir el objeto
+//    Usar toString o lanza error al imprimir el objeto
     @Override
     public String toString() {
         return "Alumno{" + "idAlumno=" + idAlumno + ", nombre=" + nombre + ", apellido=" + apellido + ", domicilio=" + domicilio + ", contacto=" + contacto + '}';
