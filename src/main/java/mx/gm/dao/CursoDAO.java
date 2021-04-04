@@ -1,18 +1,18 @@
 package mx.gm.dao;
 
 import java.util.List;
-import mx.gm.domain.Domicilio;
+import mx.gm.domain.Curso;
 
-public class DomicilioDAO extends GenericDAO<Domicilio> {
-
+public class CursoDAO extends GenericDAO<Curso> {
+    
     @Override
-    public List<Domicilio> listar() {
+    public List<Curso> listar() {
         em = getEntityManager();
-        return em.createQuery("SELECT d FROM Domicilio d").getResultList();
+        return em.createQuery("SELECT c FROM Curso c").getResultList();
     }
 
     @Override
-    public void insertar(Domicilio objetoPersistir) {
+    public void insertar(Curso objetoPersistir) {
 //        Se debe inicializar la transaccion porque no tengo servidor de aplicaciones
         try {
             em = getEntityManager();
@@ -29,7 +29,7 @@ public class DomicilioDAO extends GenericDAO<Domicilio> {
     }
 
     @Override
-    public void actualizar(Domicilio objetoMerge) {
+    public void actualizar(Curso objetoMerge) {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
@@ -45,13 +45,13 @@ public class DomicilioDAO extends GenericDAO<Domicilio> {
     }
 
     @Override
-    public Domicilio buscarPorId(Domicilio objetoBuscar) {
+    public Curso buscarPorId(Curso objetoBuscar) {
         em = getEntityManager();
-        return em.find(Domicilio.class, objetoBuscar.getIdDomicilio());
+        return em.find(Curso.class, objetoBuscar.getIdCurso());
     }
 
     @Override
-    public void eliminarRegistro(Domicilio objetoEliminar) {
+    public void eliminarRegistro(Curso objetoEliminar) {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
@@ -65,4 +65,5 @@ public class DomicilioDAO extends GenericDAO<Domicilio> {
             }
         }
     }
+    
 }

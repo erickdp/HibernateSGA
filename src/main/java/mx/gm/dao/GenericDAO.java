@@ -23,12 +23,15 @@ public abstract class GenericDAO<T> {
         }
         return em;
     }
-    
+
     public abstract List<T> listar();
 
     public abstract void insertar(T objetoPersistir);
-    
+
     public abstract void actualizar(T objetoMerge);
-    
+
     public abstract T buscarPorId(T objetoBuscar);
+
+//    Solo utilizar en caso necesario
+    public abstract void eliminarRegistro(T objetoEliminar);
 }

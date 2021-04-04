@@ -1,28 +1,69 @@
 package mx.gm.dao;
 
 import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.Query;
 import mx.gm.domain.Alumno;
 
-public class AlumnoDAO {
-
-    private EntityManagerFactory emf;
-    private EntityManager em;
-
-    public AlumnoDAO() {
-        emf = Persistence.createEntityManagerFactory("HibernatePU");
-        em = emf.createEntityManager();
+public class AlumnoDAO extends GenericDAO<Alumno> {
+    
+    @Override
+    public List<Alumno> listar() {
+        em = getEntityManager();
+        return em.createQuery("FROM Alumno a").getResultList();
     }
 
-    public void listar() {
-        String hql = "SELECT p FROM Alumno p";
-        Query query = em.createQuery(hql);
-        List<Alumno> alumnos = query.getResultList();
-        for (Alumno alumno : alumnos) {
-            System.out.println(alumno);
+    @Override
+    public void insertar(Alumno objetoPersistir) {
+//        Se debe inicializar la transaccion porque no tengo servidor de aplicaciones
+        try {
+            em = getEntityManager();
+            em.getTransaction().begin();
+            em.persist(objetoPersistir);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace(System.out);
+        } 
+//        finally {
+//            if (em != null) {
+//                em.close();
+//            }
+//        }
+    }
+
+    @Override
+    public void actualizar(Alumno objetoMerge) {
+        try {
+            em = getEntityManager();
+            em.getTransaction().begin();
+            em.merge(objetoMerge);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace(System.out);
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
+
+    @Override
+    public Alumno buscarPorId(Alumno objetoBuscar) {
+        em = getEntityManager();
+        return em.find(Alumno.class, objetoBuscar.getIdAlumno());
+    }
+
+    @Override
+    public void eliminarRegistro(Alumno objetoEliminar) {
+        try {
+            em = getEntityManager();
+            em.getTransaction().begin();
+            em.remove(em.merge(objetoEliminar));
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace(System.out);
+        } finally {
+            if (em != null) {
+                em.close();
+            }
         }
     }
 }

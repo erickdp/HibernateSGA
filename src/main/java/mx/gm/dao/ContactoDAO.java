@@ -1,18 +1,19 @@
 package mx.gm.dao;
 
 import java.util.List;
-import mx.gm.domain.Domicilio;
+import mx.gm.domain.Alumno;
+import mx.gm.domain.Contacto;
 
-public class DomicilioDAO extends GenericDAO<Domicilio> {
+public class ContactoDAO extends GenericDAO<Contacto> {
 
     @Override
-    public List<Domicilio> listar() {
+    public List<Contacto> listar() {
         em = getEntityManager();
-        return em.createQuery("SELECT d FROM Domicilio d").getResultList();
+        return em.createQuery("FROM Contacto c").getResultList();
     }
 
     @Override
-    public void insertar(Domicilio objetoPersistir) {
+    public void insertar(Contacto objetoPersistir) {
 //        Se debe inicializar la transaccion porque no tengo servidor de aplicaciones
         try {
             em = getEntityManager();
@@ -29,7 +30,7 @@ public class DomicilioDAO extends GenericDAO<Domicilio> {
     }
 
     @Override
-    public void actualizar(Domicilio objetoMerge) {
+    public void actualizar(Contacto objetoMerge) {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
@@ -45,13 +46,13 @@ public class DomicilioDAO extends GenericDAO<Domicilio> {
     }
 
     @Override
-    public Domicilio buscarPorId(Domicilio objetoBuscar) {
+    public Contacto buscarPorId(Contacto objetoBuscar) {
         em = getEntityManager();
-        return em.find(Domicilio.class, objetoBuscar.getIdDomicilio());
+        return em.find(Contacto.class, objetoBuscar.getIdContacto());
     }
 
     @Override
-    public void eliminarRegistro(Domicilio objetoEliminar) {
+    public void eliminarRegistro(Contacto objetoEliminar) {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
@@ -65,4 +66,13 @@ public class DomicilioDAO extends GenericDAO<Domicilio> {
             }
         }
     }
+
+    //    Ejemplo para crear queries personalizados pero como se tiene el 
+    //    mapeo bidireccional se puede acceder de igual forma
+    public Alumno buscarAlumnoPorEmail(Contacto contactoBuscar) {
+        em = getEntityManager();
+        String email = contactoBuscar.getEmail();
+        return (Alumno) em.createQuery("SELECT c.alumno FROM Contacto c WHERE c.email = :email").setParameter("email", email).getSingleResult();
+    }
+
 }
